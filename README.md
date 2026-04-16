@@ -1,9 +1,10 @@
 # Lighthouse (Investment Analysis System)
 
-saathvika's homework
+(saathvika's homework)
 
 A Java Swing desktop application for property investment management and analysis.
-Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
+
+> Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
 
 ![img.jpg](img.jpg)
 
