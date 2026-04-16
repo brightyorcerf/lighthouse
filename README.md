@@ -1,4 +1,4 @@
-# PropertyIQ — Investment Analysis System
+# Lighthouse : Investment Analysis System
 
 A Java Swing desktop application for property investment management and analysis.
 Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
@@ -10,20 +10,20 @@ Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart v
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  TIER 1 — PRESENTATION (com.propertyiq.presentation)            │
-│                                                                  │
+│                                                                 │
 │   LoginScreen → DashboardScreen (CardLayout shell)              │
 │     ├── PropertyListScreen   (table, edit/delete)               │
 │     ├── PropertyFormScreen   (add / edit form)                  │
 │     ├── AnalysisScreen       (metric cards + score bars)        │
 │     ├── GraphScreen          (4 × JFreeChart pastel charts)     │
 │     └── SearchScreen         (location + price range filter)    │
-│                                                                  │
-│   theme/SoftTheme.java     (all colours, fonts, factories)    │
+│                                                                 │
+│   theme/SoftTheme.java     (all colours, fonts, factories)      │
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 2 — SERVICE (com.propertyiq.service)                       │
-│                                                                  │
+│  TIER 2 — SERVICE (com.propertyiq.service)                      │
+│                                                                 │
 │   AuthService          — login/logout, BCrypt password hashing  │
 │   PropertyService      — validation, CRUD, auto-analysis on save│
 │   InvestmentAnalysis   — ROI, annual yield, investment score,   │
@@ -31,16 +31,16 @@ Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart v
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 3 — DAO (com.propertyiq.dao)                               │
-│                                                                  │
+│  TIER 3 — DAO (com.propertyiq.dao)                              │
+│                                                                 │
 │   UserDAO        — CRUD on users table                          │
 │   PropertyDAO    — CRUD + search on properties table            │
 │   AnalysisDAO    — upsert/fetch on analysis table               │
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 4 — DATABASE (com.propertyiq.database)                     │
-│                                                                  │
+│  TIER 4 — DATABASE (com.propertyiq.database)                    │
+│                                                                 │
 │   DatabaseConnection   — Singleton JDBC connection manager      │
 │   MySQL 8.x            — users / properties / analysis tables   │
 └─────────────────────────────────────────────────────────────────┘
@@ -69,10 +69,10 @@ Investment Score = ROI Score + Location Score + Risk Score
 
 ### Recommendation Thresholds
 | Score    | Classification |
-|----------|---------------|
-| ≥ 65     | ⭐ High Profit  |
-| 40 – 64  | 🔶 Moderate     |
-| < 40     | ⚠ Risky         |
+|----------|----------------|
+| ≥ 65     | High Profit    |
+| 40 – 64  | Moderate       |
+| < 40     | Risky          |
 
 ---
 
