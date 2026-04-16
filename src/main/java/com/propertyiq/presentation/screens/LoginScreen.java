@@ -90,14 +90,14 @@ public class LoginScreen extends JFrame {
         card.add(Box.createVerticalStrut(12));
 
         // Title
-        JLabel titleLabel = new JLabel("PropertyIQ");
+        JLabel titleLabel = new JLabel("lighthouse");
         titleLabel.setFont(SoftTheme.FONT_TITLE);
         titleLabel.setForeground(SoftTheme.TEXT_ACCENT);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         card.add(titleLabel);
 
         // Subtitle
-        JLabel subtitleLabel = new JLabel("Investment Analysis System");
+        JLabel subtitleLabel = new JLabel("investment analysis system");
         subtitleLabel.setFont(SoftTheme.FONT_SMALL);
         subtitleLabel.setForeground(SoftTheme.TEXT_SECONDARY);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);

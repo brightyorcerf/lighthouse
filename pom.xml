@@ -6,10 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.propertyiq</groupId>
-    <artifactId>PropertyIQ</artifactId>
+    <artifactId>lighthouse</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>PropertyIQ - Investment Analysis System</name>
+    <name>Lighthouse - Investment Analysis System</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

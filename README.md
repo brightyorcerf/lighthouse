@@ -1,4 +1,6 @@
-# Lighthouse : Investment Analysis System
+# Lighthouse (Investment Analysis System)
+
+saathvika's homework
 
 A Java Swing desktop application for property investment management and analysis.
 Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
@@ -141,7 +143,7 @@ mvn clean package
 
 ### Step 4 — Run
 ```bash
-java -jar target/PropertyIQ-1.0.0-jar-with-dependencies.jar
+java -jar target/lighthouse-1.0.0-jar-with-dependencies.jar
 ```
 
 Or open the project in NetBeans → Run Project.
