@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS analysis (
 -- Password: admin123  (BCrypt hashed)
 -- -----------------------------------------------------------
 INSERT INTO users (username, password, role) VALUES
-('admin', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LxRWSlX7byFz5X6Oi', 'ADMIN'),
-('investor1', '$2a$12$eImiTXuWVxfM37uY4JANjQ==9tKSxHn.Hfv9lz.5dOLVL7rTMI1Uy', 'INVESTOR');
+('admin', '$2a$10$Ohlb9ZEMja0Uu.otPACBQ.ShMIghaSdqXJ83CQT3SaC0Z4TyytLdC', 'ADMIN'),
+('investor1', '$2a$10$Ohlb9ZEMja0Uu.otPACBQ.ShMIghaSdqXJ83CQT3SaC0Z4TyytLdC', 'INVESTOR');
 
 -- Sample properties for testing
 INSERT INTO properties (property_name, location, purchase_price, rental_income, expenses, location_rating, risk_level, created_by) VALUES

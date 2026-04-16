@@ -136,7 +136,6 @@ private static final String USERNAME = "root"; // or your MySQL user
 
 ### Step 3 — Build
 ```bash
-cd PropertyInvestmentSystem
 mvn clean package
 ```
 

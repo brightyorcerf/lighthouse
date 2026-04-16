@@ -1,7 +1,7 @@
 package com.propertyiq.presentation.screens;
 
 import com.propertyiq.model.AnalysisResult;
-import com.propertyiq.presentation.theme.NordicTheme;
+import com.propertyiq.presentation.theme.SoftTheme;
 import com.propertyiq.service.InvestmentAnalysisService;
 
 import org.jfree.chart.ChartFactory;
@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * TIER 1 — PRESENTATION
- * Graph Screen — JFreeChart visualisations with the Nordic pastel palette.
+ * Graph Screen — JFreeChart visualisations with the pastel palette.
  * Charts:
  *   1. Bar chart  — Monthly Profit per property
  *   2. Bar chart  — ROI (%) per property
@@ -52,9 +52,9 @@ public class GraphScreen extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         header.setBorder(new EmptyBorder(0, 0, 8, 0));
-        header.add(NordicTheme.headingLabel("Investment Graphs"), BorderLayout.WEST);
+        header.add(SoftTheme.headingLabel("Investment Graphs"), BorderLayout.WEST);
 
-        JButton refreshBtn = NordicTheme.primaryButton("🔄 Refresh");
+        JButton refreshBtn = SoftTheme.primaryButton("🔄 Refresh");
         refreshBtn.addActionListener(e -> loadCharts());
         header.add(refreshBtn, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
@@ -72,7 +72,7 @@ public class GraphScreen extends JPanel {
 
     private void loadCharts() {
         chartsWrapper.removeAll();
-        JLabel loading = NordicTheme.bodyLabel("Loading charts...");
+        JLabel loading = SoftTheme.bodyLabel("Loading charts...");
         loading.setHorizontalAlignment(SwingConstants.CENTER);
         chartsWrapper.add(loading);
         chartsWrapper.revalidate();
@@ -89,7 +89,7 @@ public class GraphScreen extends JPanel {
                     List<AnalysisResult> results = get();
                     chartsWrapper.removeAll();
                     if (results.isEmpty()) {
-                        chartsWrapper.add(NordicTheme.bodyLabel("No data available. Add properties first."));
+                        chartsWrapper.add(SoftTheme.bodyLabel("No data available. Add properties first."));
                     } else {
                         chartsWrapper.setLayout(new GridLayout(2, 2, 16, 16));
                         chartsWrapper.add(wrapChart(buildMonthlyProfitChart(results), "Monthly Profit (RM)"));
@@ -101,7 +101,7 @@ public class GraphScreen extends JPanel {
                     chartsWrapper.repaint();
                 } catch (Exception ex) {
                     chartsWrapper.removeAll();
-                    chartsWrapper.add(NordicTheme.bodyLabel("Chart error: " + ex.getMessage()));
+                    chartsWrapper.add(SoftTheme.bodyLabel("Chart error: " + ex.getMessage()));
                     chartsWrapper.revalidate();
                 }
             }
@@ -119,7 +119,7 @@ public class GraphScreen extends JPanel {
         JFreeChart chart = ChartFactory.createBarChart(
             null, null, "RM", dataset, PlotOrientation.VERTICAL, false, true, false);
 
-        applyPastelBarStyle(chart, NordicTheme.CHART_BLUE);
+        applyPastelBarStyle(chart, SoftTheme.CHART_BLUE);
         return chart;
     }
 
@@ -131,7 +131,7 @@ public class GraphScreen extends JPanel {
         JFreeChart chart = ChartFactory.createBarChart(
             null, null, "%", dataset, PlotOrientation.VERTICAL, false, true, false);
 
-        applyPastelBarStyle(chart, NordicTheme.CHART_MINT);
+        applyPastelBarStyle(chart, SoftTheme.CHART_MINT);
         return chart;
     }
 
@@ -155,20 +155,20 @@ public class GraphScreen extends JPanel {
         JFreeChart chart = ChartFactory.createBarChart(
             null, null, "RM", dataset, PlotOrientation.VERTICAL, false, true, false);
 
-        applyPastelBarStyle(chart, NordicTheme.CHART_LAVENDER);
+        applyPastelBarStyle(chart, SoftTheme.CHART_LAVENDER);
         return chart;
     }
 
     // ── Styling Helpers ───────────────────────────────────────────────────────
 
     private void applyPastelBarStyle(JFreeChart chart, Color barColor) {
-        chart.setBackgroundPaint(NordicTheme.BG_CARD);
+        chart.setBackgroundPaint(SoftTheme.BG_CARD);
         chart.setBorderVisible(false);
 
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(NordicTheme.BG_CARD);
+        plot.setBackgroundPaint(SoftTheme.BG_CARD);
         plot.setOutlineVisible(false);
-        plot.setRangeGridlinePaint(NordicTheme.BORDER_SOFT);
+        plot.setRangeGridlinePaint(SoftTheme.BORDER_SOFT);
         plot.setRangeGridlineStroke(new BasicStroke(1.0f, BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND, 1f, new float[]{4f}, 0f));
         plot.setDomainGridlinesVisible(false);
@@ -176,14 +176,14 @@ public class GraphScreen extends JPanel {
 
         // Axis styling
         CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setTickLabelFont(NordicTheme.FONT_SMALL);
-        domainAxis.setTickLabelPaint(NordicTheme.TEXT_SECONDARY);
+        domainAxis.setTickLabelFont(SoftTheme.FONT_SMALL);
+        domainAxis.setTickLabelPaint(SoftTheme.TEXT_SECONDARY);
         domainAxis.setAxisLineVisible(false);
         domainAxis.setTickMarksVisible(false);
 
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setTickLabelFont(NordicTheme.FONT_SMALL);
-        rangeAxis.setTickLabelPaint(NordicTheme.TEXT_SECONDARY);
+        rangeAxis.setTickLabelFont(SoftTheme.FONT_SMALL);
+        rangeAxis.setTickLabelPaint(SoftTheme.TEXT_SECONDARY);
         rangeAxis.setAxisLineVisible(false);
         rangeAxis.setTickMarksVisible(false);
 
@@ -193,51 +193,51 @@ public class GraphScreen extends JPanel {
         renderer.setShadowVisible(false);
         renderer.setBarPainter(new org.jfree.chart.renderer.category.StandardBarPainter());
         renderer.setItemMargin(0.1);
-        renderer.setDefaultOutlineVisible(false);
+        renderer.setDrawBarOutline(false);
         renderer.setMaximumBarWidth(0.12);
     }
 
     private void styleLineChart(JFreeChart chart) {
-        chart.setBackgroundPaint(NordicTheme.BG_CARD);
+        chart.setBackgroundPaint(SoftTheme.BG_CARD);
         chart.setBorderVisible(false);
 
         CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(NordicTheme.BG_CARD);
+        plot.setBackgroundPaint(SoftTheme.BG_CARD);
         plot.setOutlineVisible(false);
-        plot.setRangeGridlinePaint(NordicTheme.BORDER_SOFT);
+        plot.setRangeGridlinePaint(SoftTheme.BORDER_SOFT);
         plot.setDomainGridlinesVisible(false);
 
         CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setTickLabelFont(NordicTheme.FONT_SMALL);
-        domainAxis.setTickLabelPaint(NordicTheme.TEXT_SECONDARY);
+        domainAxis.setTickLabelFont(SoftTheme.FONT_SMALL);
+        domainAxis.setTickLabelPaint(SoftTheme.TEXT_SECONDARY);
         domainAxis.setAxisLineVisible(false);
 
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-        rangeAxis.setTickLabelFont(NordicTheme.FONT_SMALL);
-        rangeAxis.setTickLabelPaint(NordicTheme.TEXT_SECONDARY);
+        rangeAxis.setTickLabelFont(SoftTheme.FONT_SMALL);
+        rangeAxis.setTickLabelPaint(SoftTheme.TEXT_SECONDARY);
         rangeAxis.setAxisLineVisible(false);
         rangeAxis.setRange(0, 100);
 
         LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-        renderer.setSeriesPaint(0, NordicTheme.CHART_PEACH.darker());
+        renderer.setSeriesPaint(0, SoftTheme.CHART_PEACH.darker());
         renderer.setSeriesStroke(0, new BasicStroke(2.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         renderer.setDefaultShapesVisible(true);
-        renderer.setDefaultFillPaint(NordicTheme.CHART_PEACH);
+        renderer.setDefaultFillPaint(SoftTheme.CHART_PEACH);
         renderer.setUseFillPaint(true);
     }
 
     private JPanel wrapChart(JFreeChart chart, String title) {
-        JPanel wrapper = NordicTheme.cardPanel();
+        JPanel wrapper = SoftTheme.cardPanel();
         wrapper.setLayout(new BorderLayout(0, 8));
 
         JLabel titleLbl = new JLabel(title, SwingConstants.CENTER);
-        titleLbl.setFont(NordicTheme.FONT_SUBHEAD);
-        titleLbl.setForeground(NordicTheme.TEXT_SECONDARY);
+        titleLbl.setFont(SoftTheme.FONT_SUBHEAD);
+        titleLbl.setForeground(SoftTheme.TEXT_SECONDARY);
         wrapper.add(titleLbl, BorderLayout.NORTH);
 
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setOpaque(false);
-        chartPanel.setBackground(NordicTheme.BG_CARD);
+        chartPanel.setBackground(SoftTheme.BG_CARD);
         chartPanel.setMouseWheelEnabled(false);
         chartPanel.setPreferredSize(new Dimension(0, 280));
         wrapper.add(chartPanel, BorderLayout.CENTER);

@@ -3,7 +3,7 @@ package com.propertyiq.presentation.screens;
 import com.propertyiq.model.AnalysisResult;
 import com.propertyiq.model.Property;
 import com.propertyiq.model.User;
-import com.propertyiq.presentation.theme.NordicTheme;
+import com.propertyiq.presentation.theme.SoftTheme;
 import com.propertyiq.service.InvestmentAnalysisService;
 import com.propertyiq.service.PropertyService;
 
@@ -55,19 +55,19 @@ public class AnalysisScreen extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         header.setBorder(new EmptyBorder(0, 0, 8, 0));
-        header.add(NordicTheme.headingLabel("Investment Analysis"), BorderLayout.WEST);
+        header.add(SoftTheme.headingLabel("Investment Analysis"), BorderLayout.WEST);
 
-        JButton refreshBtn = NordicTheme.primaryButton("🔄 Recalculate All");
+        JButton refreshBtn = SoftTheme.primaryButton("🔄 Recalculate All");
         refreshBtn.addActionListener(e -> recalculateAll());
         header.add(refreshBtn, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
         // ── Best investment banner ────────────────────────────────────────
-        JPanel bestPanel = NordicTheme.cardPanel();
+        JPanel bestPanel = SoftTheme.cardPanel();
         bestPanel.setLayout(new BorderLayout());
-        bestPanel.setBackground(NordicTheme.HIGHLIGHT_GREEN);
+        bestPanel.setBackground(SoftTheme.HIGHLIGHT_GREEN);
         bestInvestmentLabel = new JLabel("Calculating best investment...");
-        bestInvestmentLabel.setFont(NordicTheme.FONT_SUBHEAD);
+        bestInvestmentLabel.setFont(SoftTheme.FONT_SUBHEAD);
         bestInvestmentLabel.setForeground(new Color(0x065F46));
         bestInvestmentLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
         bestPanel.add(bestInvestmentLabel, BorderLayout.CENTER);
@@ -140,7 +140,7 @@ public class AnalysisScreen extends JPanel {
         resultsPanel.removeAll();
 
         if (results.isEmpty()) {
-            JLabel empty = NordicTheme.bodyLabel("No analysis results found. Add properties first.");
+            JLabel empty = SoftTheme.bodyLabel("No analysis results found. Add properties first.");
             empty.setAlignmentX(Component.LEFT_ALIGNMENT);
             resultsPanel.add(empty);
             resultsPanel.revalidate();
@@ -156,7 +156,7 @@ public class AnalysisScreen extends JPanel {
     }
 
     private JPanel buildResultCard(AnalysisResult r) {
-        JPanel card = NordicTheme.cardPanel();
+        JPanel card = SoftTheme.cardPanel();
         card.setLayout(new BorderLayout(16, 0));
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 140));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -168,19 +168,19 @@ public class AnalysisScreen extends JPanel {
         left.setPreferredSize(new Dimension(200, 0));
 
         JLabel nameLbl = new JLabel(r.getPropertyName());
-        nameLbl.setFont(NordicTheme.FONT_SUBHEAD);
-        nameLbl.setForeground(NordicTheme.TEXT_PRIMARY);
+        nameLbl.setFont(SoftTheme.FONT_SUBHEAD);
+        nameLbl.setForeground(SoftTheme.TEXT_PRIMARY);
 
         JLabel recBadge = new JLabel(r.getRecommendationLabel());
-        recBadge.setFont(NordicTheme.FONT_SMALL);
+        recBadge.setFont(SoftTheme.FONT_SMALL);
         recBadge.setOpaque(true);
         recBadge.setBorder(new EmptyBorder(3, 10, 3, 10));
         recBadge.setBackground(switch (r.getRecommendation()) {
-            case HIGH_PROFIT -> NordicTheme.HIGHLIGHT_GREEN;
-            case MODERATE    -> NordicTheme.HIGHLIGHT_AMBER;
-            case RISKY       -> NordicTheme.HIGHLIGHT_RED;
+            case HIGH_PROFIT -> SoftTheme.HIGHLIGHT_GREEN;
+            case MODERATE    -> SoftTheme.HIGHLIGHT_AMBER;
+            case RISKY       -> SoftTheme.HIGHLIGHT_RED;
         });
-        recBadge.setForeground(NordicTheme.TEXT_PRIMARY);
+        recBadge.setForeground(SoftTheme.TEXT_PRIMARY);
 
         left.add(nameLbl);
         left.add(Box.createVerticalStrut(8));
@@ -209,19 +209,19 @@ public class AnalysisScreen extends JPanel {
         scoreBar.setValue((int) r.getInvestmentScore());
         scoreBar.setStringPainted(true);
         scoreBar.setString(String.format("%.0f%%", r.getInvestmentScore()));
-        scoreBar.setFont(NordicTheme.FONT_SMALL);
+        scoreBar.setFont(SoftTheme.FONT_SMALL);
         scoreBar.setForeground(r.getInvestmentScore() >= 65
             ? new Color(0x34D399)
             : r.getInvestmentScore() >= 40
                 ? new Color(0xFBBF24)
                 : new Color(0xF87171));
-        scoreBar.setBackground(NordicTheme.BORDER_SOFT);
+        scoreBar.setBackground(SoftTheme.BORDER_SOFT);
         scoreBar.setBorder(new EmptyBorder(0, 8, 0, 8));
         scoreBar.setOrientation(JProgressBar.VERTICAL);
 
         JLabel scoreLbl = new JLabel("Score", SwingConstants.CENTER);
-        scoreLbl.setFont(NordicTheme.FONT_SMALL);
-        scoreLbl.setForeground(NordicTheme.TEXT_SECONDARY);
+        scoreLbl.setFont(SoftTheme.FONT_SMALL);
+        scoreLbl.setForeground(SoftTheme.TEXT_SECONDARY);
 
         rightPanel.add(scoreLbl,  BorderLayout.NORTH);
         rightPanel.add(scoreBar,  BorderLayout.CENTER);
@@ -232,17 +232,17 @@ public class AnalysisScreen extends JPanel {
 
     private JPanel metricBox(String label, String value) {
         JPanel box = new JPanel(new BorderLayout(0, 4));
-        box.setBackground(NordicTheme.BG_PRIMARY);
+        box.setBackground(SoftTheme.BG_PRIMARY);
         box.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(NordicTheme.BORDER_SOFT, 1, true),
+            BorderFactory.createLineBorder(SoftTheme.BORDER_SOFT, 1, true),
             new EmptyBorder(8, 12, 8, 12)
         ));
         JLabel lbl = new JLabel(label);
-        lbl.setFont(NordicTheme.FONT_SMALL);
-        lbl.setForeground(NordicTheme.TEXT_SECONDARY);
+        lbl.setFont(SoftTheme.FONT_SMALL);
+        lbl.setForeground(SoftTheme.TEXT_SECONDARY);
         JLabel val = new JLabel(value);
-        val.setFont(NordicTheme.FONT_SUBHEAD);
-        val.setForeground(NordicTheme.TEXT_PRIMARY);
+        val.setFont(SoftTheme.FONT_SUBHEAD);
+        val.setForeground(SoftTheme.TEXT_PRIMARY);
         box.add(lbl, BorderLayout.NORTH);
         box.add(val, BorderLayout.CENTER);
         return box;

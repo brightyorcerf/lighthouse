@@ -2,7 +2,7 @@ package com.propertyiq.presentation.screens;
 
 import com.propertyiq.model.Property;
 import com.propertyiq.model.User;
-import com.propertyiq.presentation.theme.NordicTheme;
+import com.propertyiq.presentation.theme.SoftTheme;
 import com.propertyiq.service.PropertyService;
 
 import javax.swing.*;
@@ -56,33 +56,33 @@ public class SearchScreen extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         header.setBorder(new EmptyBorder(0, 0, 8, 0));
-        header.add(NordicTheme.headingLabel("Search Properties"), BorderLayout.WEST);
+        header.add(SoftTheme.headingLabel("Search Properties"), BorderLayout.WEST);
         add(header, BorderLayout.NORTH);
 
         // ── Search filter card ────────────────────────────────────────────
-        JPanel filterCard = NordicTheme.cardPanel();
+        JPanel filterCard = SoftTheme.cardPanel();
         filterCard.setLayout(new FlowLayout(FlowLayout.LEFT, 12, 8));
 
-        filterCard.add(NordicTheme.bodyLabel("Location:"));
-        locationField = NordicTheme.styledField(16);
+        filterCard.add(SoftTheme.bodyLabel("Location:"));
+        locationField = SoftTheme.styledField(16);
         locationField.setToolTipText("Partial match, e.g. 'Kuala'");
         filterCard.add(locationField);
 
         filterCard.add(Box.createHorizontalStrut(8));
-        filterCard.add(NordicTheme.bodyLabel("Min Price (RM):"));
-        minPriceField = NordicTheme.styledField(10);
+        filterCard.add(SoftTheme.bodyLabel("Min Price (RM):"));
+        minPriceField = SoftTheme.styledField(10);
         filterCard.add(minPriceField);
 
-        filterCard.add(NordicTheme.bodyLabel("Max Price (RM):"));
-        maxPriceField = NordicTheme.styledField(10);
+        filterCard.add(SoftTheme.bodyLabel("Max Price (RM):"));
+        maxPriceField = SoftTheme.styledField(10);
         filterCard.add(maxPriceField);
 
         filterCard.add(Box.createHorizontalStrut(8));
-        JButton searchBtn = NordicTheme.successButton("🔍 Search");
+        JButton searchBtn = SoftTheme.successButton("🔍 Search");
         searchBtn.addActionListener(e -> runSearch());
         filterCard.add(searchBtn);
 
-        JButton clearBtn = NordicTheme.primaryButton("✕ Clear");
+        JButton clearBtn = SoftTheme.primaryButton("✕ Clear");
         clearBtn.addActionListener(e -> {
             locationField.setText("");
             minPriceField.setText("");
@@ -107,8 +107,8 @@ public class SearchScreen extends JPanel {
 
         // ── Result count ─────────────────────────────────────────────────
         resultCountLabel = new JLabel("  ");
-        resultCountLabel.setFont(NordicTheme.FONT_SMALL);
-        resultCountLabel.setForeground(NordicTheme.TEXT_SECONDARY);
+        resultCountLabel.setFont(SoftTheme.FONT_SMALL);
+        resultCountLabel.setForeground(SoftTheme.TEXT_SECONDARY);
         add(resultCountLabel, BorderLayout.BEFORE_FIRST_LINE);
 
         // ── Results table ─────────────────────────────────────────────────
@@ -119,15 +119,15 @@ public class SearchScreen extends JPanel {
         styleTable();
 
         JScrollPane scroll = new JScrollPane(table);
-        scroll.setBorder(BorderFactory.createLineBorder(NordicTheme.BORDER_SOFT, 1, true));
-        scroll.getViewport().setBackground(NordicTheme.BG_CARD);
+        scroll.setBorder(BorderFactory.createLineBorder(SoftTheme.BORDER_SOFT, 1, true));
+        scroll.getViewport().setBackground(SoftTheme.BG_CARD);
         add(scroll, BorderLayout.CENTER);
 
         // ── Quick analyse button for selected row ─────────────────────────
         JPanel bottomBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomBar.setOpaque(false);
 
-        JButton viewAnalysisBtn = NordicTheme.primaryButton("📊 View Full Analysis");
+        JButton viewAnalysisBtn = SoftTheme.primaryButton("📊 View Full Analysis");
         viewAnalysisBtn.addActionListener(e -> dashboard.navigateTo("ANALYSIS"));
         bottomBar.add(viewAnalysisBtn);
         add(bottomBar, BorderLayout.SOUTH);
@@ -191,21 +191,21 @@ public class SearchScreen extends JPanel {
     }
 
     private void styleTable() {
-        table.setFont(NordicTheme.FONT_BODY);
-        table.setForeground(NordicTheme.TEXT_PRIMARY);
-        table.setBackground(NordicTheme.BG_CARD);
+        table.setFont(SoftTheme.FONT_BODY);
+        table.setForeground(SoftTheme.TEXT_PRIMARY);
+        table.setBackground(SoftTheme.BG_CARD);
         table.setRowHeight(40);
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
         table.setSelectionBackground(new Color(0xBAE6FD));
-        table.setSelectionForeground(NordicTheme.TEXT_PRIMARY);
+        table.setSelectionForeground(SoftTheme.TEXT_PRIMARY);
         table.setFillsViewportHeight(true);
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(NordicTheme.FONT_SUBHEAD);
-        header.setBackground(NordicTheme.BG_SIDEBAR);
-        header.setForeground(NordicTheme.TEXT_PRIMARY);
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, NordicTheme.BORDER_SOFT));
+        header.setFont(SoftTheme.FONT_SUBHEAD);
+        header.setBackground(SoftTheme.BG_SIDEBAR);
+        header.setForeground(SoftTheme.TEXT_PRIMARY);
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, SoftTheme.BORDER_SOFT));
         header.setReorderingAllowed(false);
 
         int[] widths = { 40, 180, 130, 130, 110, 110, 80, 80 };
@@ -217,15 +217,15 @@ public class SearchScreen extends JPanel {
             (tbl, value, sel, focus, row, col) -> {
                 JLabel lbl = new JLabel(String.valueOf(value), SwingConstants.CENTER);
                 lbl.setOpaque(true);
-                lbl.setFont(NordicTheme.FONT_SMALL);
+                lbl.setFont(SoftTheme.FONT_SMALL);
                 lbl.setBackground(sel ? tbl.getSelectionBackground()
                     : switch (String.valueOf(value)) {
-                        case "LOW"    -> NordicTheme.HIGHLIGHT_GREEN;
-                        case "MEDIUM" -> NordicTheme.HIGHLIGHT_AMBER;
-                        case "HIGH"   -> NordicTheme.HIGHLIGHT_RED;
-                        default       -> NordicTheme.BG_CARD;
+                        case "LOW"    -> SoftTheme.HIGHLIGHT_GREEN;
+                        case "MEDIUM" -> SoftTheme.HIGHLIGHT_AMBER;
+                        case "HIGH"   -> SoftTheme.HIGHLIGHT_RED;
+                        default       -> SoftTheme.BG_CARD;
                     });
-                lbl.setForeground(NordicTheme.TEXT_PRIMARY);
+                lbl.setForeground(SoftTheme.TEXT_PRIMARY);
                 return lbl;
             }
         );
@@ -236,9 +236,9 @@ public class SearchScreen extends JPanel {
             public Component getTableCellRendererComponent(JTable t, Object val,
                     boolean sel, boolean focus, int row, int col) {
                 super.getTableCellRendererComponent(t, val, sel, focus, row, col);
-                if (!sel) setBackground(row % 2 == 0 ? NordicTheme.BG_CARD : new Color(0xF1F5F9));
+                if (!sel) setBackground(row % 2 == 0 ? SoftTheme.BG_CARD : new Color(0xF1F5F9));
                 setBorder(new EmptyBorder(0, 12, 0, 12));
-                setForeground(NordicTheme.TEXT_PRIMARY);
+                setForeground(SoftTheme.TEXT_PRIMARY);
                 return this;
             }
         });

@@ -188,11 +188,13 @@ public class LoginScreen extends JFrame {
                     dispose();
                     new DashboardScreen(user);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     Throwable cause = ex.getCause();
                     if (cause instanceof AuthException) {
                         showError(cause.getMessage());
                     } else if (cause instanceof SQLException) {
                         showError("Database error. Please check connection.");
+                        cause.printStackTrace();
                     } else {
                         showError("An unexpected error occurred.");
                     }
