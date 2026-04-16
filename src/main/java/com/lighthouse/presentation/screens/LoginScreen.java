@@ -1,9 +1,9 @@
-package com.propertyiq.presentation.screens;
+package com.lighthouse.presentation.screens;
 
-import com.propertyiq.presentation.theme.SoftTheme;
-import com.propertyiq.service.AuthService;
-import com.propertyiq.service.AuthService.AuthException;
-import com.propertyiq.model.User;
+import com.lighthouse.presentation.theme.SoftTheme;
+import com.lighthouse.service.AuthService;
+import com.lighthouse.service.AuthService.AuthException;
+import com.lighthouse.model.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +29,7 @@ public class LoginScreen extends JFrame {
     }
 
     private void initUI() {
-        setTitle("PropertyIQ — Login");
+        setTitle("Lighthouse — Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(460, 560);
         setLocationRelativeTo(null);

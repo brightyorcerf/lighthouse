@@ -1,7 +1,7 @@
-package com.propertyiq.service;
+package com.lighthouse.service;
 
-import com.propertyiq.dao.UserDAO;
-import com.propertyiq.model.User;
+import com.lighthouse.dao.UserDAO;
+import com.lighthouse.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;

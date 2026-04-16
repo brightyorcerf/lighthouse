@@ -1,10 +1,10 @@
-package com.propertyiq.presentation.screens;
+package com.lighthouse.presentation.screens;
 
-import com.propertyiq.model.Property;
-import com.propertyiq.model.User;
-import com.propertyiq.presentation.theme.SoftTheme;
-import com.propertyiq.service.PropertyService;
-import com.propertyiq.service.PropertyService.ValidationException;
+import com.lighthouse.model.Property;
+import com.lighthouse.model.User;
+import com.lighthouse.presentation.theme.SoftTheme;
+import com.lighthouse.service.PropertyService;
+import com.lighthouse.service.PropertyService.ValidationException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

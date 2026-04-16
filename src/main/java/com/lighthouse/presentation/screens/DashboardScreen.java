@@ -1,8 +1,8 @@
-package com.propertyiq.presentation.screens;
+package com.lighthouse.presentation.screens;
 
-import com.propertyiq.model.User;
-import com.propertyiq.presentation.theme.SoftTheme;
-import com.propertyiq.service.AuthService;
+import com.lighthouse.model.User;
+import com.lighthouse.presentation.theme.SoftTheme;
+import com.lighthouse.service.AuthService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -39,7 +39,7 @@ public class DashboardScreen extends JFrame {
     }
 
     private void initUI() {
-        setTitle("PropertyIQ — Dashboard");
+        setTitle("Lighthouse — Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 760);
         setMinimumSize(new Dimension(1000, 650));
@@ -71,7 +71,7 @@ public class DashboardScreen extends JFrame {
         logoIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 28));
         logoIcon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel appName = new JLabel("PropertyIQ");
+        JLabel appName = new JLabel("Lighthouse");
         appName.setFont(SoftTheme.FONT_HEADING);
         appName.setForeground(SoftTheme.TEXT_ACCENT);
         appName.setAlignmentX(Component.CENTER_ALIGNMENT);

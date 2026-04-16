@@ -5,13 +5,15 @@ saathvika's homework
 A Java Swing desktop application for property investment management and analysis.
 Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
 
+![img.jpg](img.jpg)
+
 ---
 
 ## Architecture Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  TIER 1 — PRESENTATION (com.propertyiq.presentation)            │
+│  TIER 1 — PRESENTATION (com.lighthouse.presentation)            │
 │                                                                 │
 │   LoginScreen → DashboardScreen (CardLayout shell)              │
 │     ├── PropertyListScreen   (table, edit/delete)               │
@@ -24,7 +26,7 @@ Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart v
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 2 — SERVICE (com.propertyiq.service)                      │
+│  TIER 2 — SERVICE (com.lighthouse.service)                      │
 │                                                                 │
 │   AuthService          — login/logout, BCrypt password hashing  │
 │   PropertyService      — validation, CRUD, auto-analysis on save│
@@ -33,7 +35,7 @@ Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart v
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 3 — DAO (com.propertyiq.dao)                              │
+│  TIER 3 — DAO (com.lighthouse.dao)                              │
 │                                                                 │
 │   UserDAO        — CRUD on users table                          │
 │   PropertyDAO    — CRUD + search on properties table            │
@@ -41,7 +43,7 @@ Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart v
 └──────────────────────────┬──────────────────────────────────────┘
                            │ calls
 ┌──────────────────────────▼──────────────────────────────────────┐
-│  TIER 4 — DATABASE (com.propertyiq.database)                    │
+│  TIER 4 — DATABASE (com.lighthouse.database)                    │
 │                                                                 │
 │   DatabaseConnection   — Singleton JDBC connection manager      │
 │   MySQL 8.x            — users / properties / analysis tables   │
@@ -84,7 +86,7 @@ Investment Score = ROI Score + Location Score + Risk Score
 PropertyInvestmentSystem/
 ├── pom.xml
 ├── database_schema.sql
-└── src/main/java/com/propertyiq/
+└── src/main/java/com/lighthouse/
     ├── Main.java
     ├── database/
     │   └── DatabaseConnection.java          (Singleton)
@@ -154,7 +156,7 @@ Or open the project in NetBeans → Run Project.
 | Username  | Password   | Role     |
 |-----------|------------|----------|
 | admin     | admin123   | Admin    |
-| investor1 | pass123    | Investor |
+| investor1 | admin123   | Investor |
 
 > Passwords are stored as BCrypt hashes (work factor 12).  
 > Plain-text passwords are **never** stored or logged.

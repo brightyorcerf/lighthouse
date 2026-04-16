@@ -1,4 +1,4 @@
-package com.propertyiq.presentation.theme;
+package com.lighthouse.presentation.theme;
 
 import javax.swing.*;
 import javax.swing.border.*;

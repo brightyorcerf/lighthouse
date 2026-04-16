@@ -1,10 +1,10 @@
 -- ============================================================
---  PropertyIQ - Database Schema
+--  Lighthouse - Database Schema
 --  Run this script once to set up your MySQL database
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS propertyiq_db;
-USE propertyiq_db;
+CREATE DATABASE IF NOT EXISTS lighthouse_db;
+USE lighthouse_db;
 
 -- -----------------------------------------------------------
 -- USERS TABLE

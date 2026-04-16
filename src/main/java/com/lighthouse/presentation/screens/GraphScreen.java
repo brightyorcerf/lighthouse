@@ -1,8 +1,8 @@
-package com.propertyiq.presentation.screens;
+package com.lighthouse.presentation.screens;
 
-import com.propertyiq.model.AnalysisResult;
-import com.propertyiq.presentation.theme.SoftTheme;
-import com.propertyiq.service.InvestmentAnalysisService;
+import com.lighthouse.model.AnalysisResult;
+import com.lighthouse.presentation.theme.SoftTheme;
+import com.lighthouse.service.InvestmentAnalysisService;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

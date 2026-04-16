@@ -1,10 +1,10 @@
-package com.propertyiq.service;
+package com.lighthouse.service;
 
-import com.propertyiq.dao.AnalysisDAO;
-import com.propertyiq.model.AnalysisResult;
-import com.propertyiq.model.AnalysisResult.Recommendation;
-import com.propertyiq.model.Property;
-import com.propertyiq.model.Property.RiskLevel;
+import com.lighthouse.dao.AnalysisDAO;
+import com.lighthouse.model.AnalysisResult;
+import com.lighthouse.model.AnalysisResult.Recommendation;
+import com.lighthouse.model.Property;
+import com.lighthouse.model.Property.RiskLevel;
 
 import java.sql.SQLException;
 import java.util.Comparator;

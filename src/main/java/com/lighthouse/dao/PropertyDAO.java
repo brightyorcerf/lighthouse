@@ -1,7 +1,7 @@
-package com.propertyiq.dao;
+package com.lighthouse.dao;
 
-import com.propertyiq.database.DatabaseConnection;
-import com.propertyiq.model.Property;
+import com.lighthouse.database.DatabaseConnection;
+import com.lighthouse.model.Property;
 
 import java.sql.*;
 import java.util.ArrayList;

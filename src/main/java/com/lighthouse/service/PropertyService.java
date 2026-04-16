@@ -1,9 +1,9 @@
-package com.propertyiq.service;
+package com.lighthouse.service;
 
-import com.propertyiq.dao.AnalysisDAO;
-import com.propertyiq.dao.PropertyDAO;
-import com.propertyiq.model.AnalysisResult;
-import com.propertyiq.model.Property;
+import com.lighthouse.dao.AnalysisDAO;
+import com.lighthouse.dao.PropertyDAO;
+import com.lighthouse.model.AnalysisResult;
+import com.lighthouse.model.Property;
 
 import java.sql.SQLException;
 import java.util.List;

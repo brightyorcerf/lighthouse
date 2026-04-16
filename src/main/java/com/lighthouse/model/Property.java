@@ -1,4 +1,4 @@
-package com.propertyiq.model;
+package com.lighthouse.model;
 
 /**
  * MODEL — Property

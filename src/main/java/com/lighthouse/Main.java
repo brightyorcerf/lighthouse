@@ -1,9 +1,9 @@
-package com.propertyiq;
+package com.lighthouse;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.propertyiq.database.DatabaseConnection;
-import com.propertyiq.presentation.screens.LoginScreen;
-import com.propertyiq.presentation.theme.SoftTheme;
+import com.lighthouse.database.DatabaseConnection;
+import com.lighthouse.presentation.screens.LoginScreen;
+import com.lighthouse.presentation.theme.SoftTheme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +55,7 @@ public class Main {
                     "<html><b>Cannot connect to the database.</b><br><br>"
                     + "Please ensure:<br>"
                     + "• MySQL is running on localhost:3306<br>"
-                    + "• Database 'propertyiq_db' exists (run database_schema.sql)<br>"
+                    + "• Database 'lighthouse_db' exists (run database_schema.sql)<br>"
                     + "• Credentials in DatabaseConnection.java are correct<br><br>"
                     + "<i>Error: " + e.getCause().getMessage() + "</i></html>",
                     "Database Connection Failed",
