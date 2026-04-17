@@ -70,6 +70,10 @@ public class GraphScreen extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 
+    public void refresh() {
+        loadCharts();
+    }
+
     private void loadCharts() {
         chartsWrapper.removeAll();
         JLabel loading = SoftTheme.bodyLabel("Loading charts...");

@@ -204,11 +204,19 @@ public class DashboardScreen extends JFrame {
                 yield propertyFormScreen;
             }
             case "ANALYSIS" -> {
-                analysisScreen = new AnalysisScreen(this, currentUser);
+                if (analysisScreen == null) {
+                    analysisScreen = new AnalysisScreen(this, currentUser);
+                } else {
+                    analysisScreen.refresh();
+                }
                 yield analysisScreen;
             }
             case "GRAPHS" -> {
-                graphScreen = new GraphScreen(this);
+                if (graphScreen == null) {
+                    graphScreen = new GraphScreen(this);
+                } else {
+                    graphScreen.refresh();
+                }
                 yield graphScreen;
             }
             case "SEARCH" -> {

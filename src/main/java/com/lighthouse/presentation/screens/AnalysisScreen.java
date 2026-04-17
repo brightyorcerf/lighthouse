@@ -93,6 +93,10 @@ public class AnalysisScreen extends JPanel {
         add(scroll, BorderLayout.CENTER);
     }
 
+    public void refresh() {
+        loadData();
+    }
+
     private void loadData() {
         SwingWorker<List<AnalysisResult>, Void> worker = new SwingWorker<>() {
             @Override
