@@ -9,7 +9,7 @@
     <artifactId>lighthouse</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Lighthouse - Investment Analysis System</name>
+    <name>Lighthouse</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
