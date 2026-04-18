@@ -1,12 +1,12 @@
-# Lighthouse (Investment Analysis System)
+# Lighthouse
 
 (saathvika's homework)
 
-A Java Swing desktop application for property investment management and analysis.
-
-> Soft aesthetic · 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
+Investment Analysis System: A Java Swing desktop application for property investment management and analysis.
 
 ![img.jpg](img.jpg)
+
+> 4-Tier Layered Architecture · BCrypt security · JFreeChart visualisations.
 
 ---
 
@@ -74,11 +74,11 @@ To test the evaluation parameters, here are 5 realistic properties to input.
 
 | Property Name               | Location      | Price (RM) | Rent/mo (RM) | Cost/mo (RM) | Profile               |
 |-----------------------------|---------------|------------|--------------|--------------|-----------------------|
-| Prime Studio Suite          | Kuala Lumpur  | 450,000    | 2,500        | 350          | High profit, low risk |
-| Bayview Family Condo        | Penang        | 650,000    | 3,800        | 500          | Excellent yields      |
-| Suburban Corner Lot         | Johor Bahru   | 550,000    | 2,000        | 250          | Moderate / Stable     |
-| Heritage Walk-Up            | Melaka        | 300,000    | 1,800        | 200          | Low Cost, Med ROI     |
-| University Tech Duplex      | Cyberjaya     | 400,000    | 2,300        | 300          | High Demand           |
+| unicorn valley              | Kuala Lumpur  | 450,000    | 2,500        | 350          | High profit, low risk |
+| stardust                    | Penang        | 650,000    | 3,800        | 500          | Excellent yields      |
+| tejaansh's mansion          | Johor Bahru   | 550,000    | 2,000        | 250          | Moderate / Stable     |
+| heritage                    | Melaka        | 300,000    | 1,800        | 200          | Low Cost, Med ROI     |
+| oranges&apples              | Cyberjaya     | 400,000    | 2,300        | 300          | High Demand           |
 
 ### Recommendation Thresholds
 | Score    | Classification |
@@ -182,26 +182,15 @@ Or open the project in NetBeans → Run Project.
 
 ---
 
-## Data Privacy (BCrypt Explanation for Examiner)
+## Data Privacy
 
 BCrypt is an adaptive password hashing algorithm:
 
-1. **Salt**: A unique random salt is generated per password. Two identical passwords produce completely different hashes.
-2. **Work factor**: Cost factor of 12 means 2¹² = 4096 iterations. Makes brute-force attacks computationally expensive.
-3. **One-way**: There is no known way to reverse a BCrypt hash to the original password.
-4. **Verification**: `BCrypt.checkpw(inputPassword, storedHash)` — the plain-text password is tested against the stored hash without decryption.
+1. Salt: A unique random salt is generated per password. Two identical passwords produce completely different hashes.
+2. Work factor: Cost factor of 12 means 2¹² = 4096 iterations. Makes brute-force attacks computationally expensive.
+3. One-way: There is no known way to reverse a BCrypt hash to the original password.
+4. Verification: `BCrypt.checkpw(inputPassword, storedHash)` — the plain-text password is tested against the stored hash without decryption.
 
 Even if the entire database is leaked, attacker cannot recover user passwords.
 
 ---
-
-## User Roles
-| Feature              | Admin | Investor |
-|----------------------|-------|----------|
-| View properties      | ✅    | ✅       |
-| Add property         | ✅    | ❌       |
-| Edit property        | ✅    | ❌       |
-| Delete property      | ✅    | ❌       |
-| View analysis        | ✅    | ✅       |
-| View graphs          | ✅    | ✅       |
-| Search properties    | ✅    | ✅       |
