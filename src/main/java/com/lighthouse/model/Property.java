@@ -10,28 +10,24 @@ public class Property {
 
     private int        propertyId;
     private String     propertyName;
-    private String     location;
-    private double     purchasePrice;
-    private double     rentalIncome;   // monthly
-    private double     expenses;       // monthly
-    private int        locationRating; // 1–10
-    private RiskLevel  riskLevel;
+    private int        locationId;     // FK
+    private Location   locationObj;    // from JOIN
+    private double     price;
+    private double     rent;           // monthly
+    private double     cost;           // monthly
     private int        createdBy;      // user_id FK
 
     // ── Constructors ──────────────────────────────────────────────────────────
 
     public Property() {}
 
-    public Property(String propertyName, String location, double purchasePrice,
-                    double rentalIncome, double expenses,
-                    int locationRating, RiskLevel riskLevel, int createdBy) {
+    public Property(String propertyName, int locationId, double price,
+                    double rent, double cost, int createdBy) {
         this.propertyName   = propertyName;
-        this.location       = location;
-        this.purchasePrice  = purchasePrice;
-        this.rentalIncome   = rentalIncome;
-        this.expenses       = expenses;
-        this.locationRating = locationRating;
-        this.riskLevel      = riskLevel;
+        this.locationId     = locationId;
+        this.price          = price;
+        this.rent           = rent;
+        this.cost           = cost;
         this.createdBy      = createdBy;
     }
 
@@ -43,29 +39,26 @@ public class Property {
     public String getPropertyName()            { return propertyName; }
     public void   setPropertyName(String n)    { this.propertyName = n; }
 
-    public String getLocation()                { return location; }
-    public void   setLocation(String l)        { this.location = l; }
+    public int    getLocationId()              { return locationId; }
+    public void   setLocationId(int l)         { this.locationId = l; }
 
-    public double getPurchasePrice()           { return purchasePrice; }
-    public void   setPurchasePrice(double p)   { this.purchasePrice = p; }
+    public Location getLocationObj()             { return locationObj; }
+    public void   setLocationObj(Location loc)   { this.locationObj = loc; }
 
-    public double getRentalIncome()            { return rentalIncome; }
-    public void   setRentalIncome(double r)    { this.rentalIncome = r; }
+    public double getPrice()                   { return price; }
+    public void   setPrice(double p)           { this.price = p; }
 
-    public double getExpenses()                { return expenses; }
-    public void   setExpenses(double e)        { this.expenses = e; }
+    public double getRent()                    { return rent; }
+    public void   setRent(double r)            { this.rent = r; }
 
-    public int    getLocationRating()          { return locationRating; }
-    public void   setLocationRating(int r)     { this.locationRating = r; }
+    public double getCost()                    { return cost; }
+    public void   setCost(double c)            { this.cost = c; }
 
-    public RiskLevel getRiskLevel()            { return riskLevel; }
-    public void      setRiskLevel(RiskLevel r) { this.riskLevel = r; }
-
-    public int  getCreatedBy()             { return createdBy; }
-    public void setCreatedBy(int uid)      { this.createdBy = uid; }
+    public int  getCreatedBy()                 { return createdBy; }
+    public void setCreatedBy(int uid)          { this.createdBy = uid; }
 
     /** Convenience: monthly net profit */
-    public double getMonthlyProfit() { return rentalIncome - expenses; }
+    public double getMonthlyProfit() { return rent - cost; }
 
     /** Convenience: annual net profit */
     public double getAnnualProfit() { return getMonthlyProfit() * 12; }
@@ -73,6 +66,6 @@ public class Property {
     @Override
     public String toString() {
         return "Property{id=" + propertyId + ", name='" + propertyName
-             + "', location='" + location + "', price=" + purchasePrice + "}";
+             + "', locationId=" + locationId + ", price=" + price + "}";
     }
 }

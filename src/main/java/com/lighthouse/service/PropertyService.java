@@ -36,9 +36,9 @@ public class PropertyService {
         return propertyDAO.findById(propertyId);
     }
 
-    public List<Property> search(String location, Double minPrice, Double maxPrice)
+    public List<Property> search(Integer locationId, Double minPrice, Double maxPrice)
             throws SQLException {
-        return propertyDAO.search(location, minPrice, maxPrice);
+        return propertyDAO.search(locationId, minPrice, maxPrice);
     }
 
     // ── Mutations ─────────────────────────────────────────────────────────────
@@ -90,18 +90,14 @@ public class PropertyService {
     private void validate(Property p) throws ValidationException {
         if (p.getPropertyName() == null || p.getPropertyName().isBlank())
             throw new ValidationException("Property name is required.");
-        if (p.getLocation() == null || p.getLocation().isBlank())
-            throw new ValidationException("Location is required.");
-        if (p.getPurchasePrice() <= 0)
-            throw new ValidationException("Purchase price must be greater than zero.");
-        if (p.getRentalIncome() < 0)
-            throw new ValidationException("Rental income cannot be negative.");
-        if (p.getExpenses() < 0)
-            throw new ValidationException("Expenses cannot be negative.");
-        if (p.getLocationRating() < 1 || p.getLocationRating() > 10)
-            throw new ValidationException("Location rating must be between 1 and 10.");
-        if (p.getRiskLevel() == null)
-            throw new ValidationException("Risk level must be selected.");
+        if (p.getLocationId() <= 0)
+            throw new ValidationException("Location must be selected.");
+        if (p.getPrice() <= 0)
+            throw new ValidationException("Price must be greater than zero.");
+        if (p.getRent() < 0)
+            throw new ValidationException("Rent cannot be negative.");
+        if (p.getCost() < 0)
+            throw new ValidationException("Cost cannot be negative.");
     }
 
     // ── Custom Exception ──────────────────────────────────────────────────────

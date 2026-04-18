@@ -1,10 +1,13 @@
 package com.lighthouse.presentation.screens;
 
 import com.lighthouse.model.Property;
+import com.lighthouse.model.Location;
 import com.lighthouse.model.User;
+import com.lighthouse.dao.LocationDAO;
 import com.lighthouse.presentation.theme.SoftTheme;
 import com.lighthouse.service.PropertyService;
 import com.lighthouse.service.PropertyService.ValidationException;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,9 +27,8 @@ public class PropertyFormScreen extends JPanel {
     private final PropertyService propertyService;
 
     // Form fields
-    private JTextField  nameField, locationField, priceField, rentalField, expensesField;
-    private JSpinner    ratingSpinner;
-    private JComboBox<Property.RiskLevel> riskCombo;
+    private JTextField  nameField, priceField, rentalField, expensesField;
+    private JComboBox<Location> locationCombo;
     private JLabel      errorLabel;
 
     public PropertyFormScreen(DashboardScreen dashboard, User currentUser, Property editTarget) {
@@ -68,8 +70,26 @@ public class PropertyFormScreen extends JPanel {
         // Row 0: Property Name
         row = addFormRow(card, gbc, row, "Property Name *", nameField = SoftTheme.styledField(25));
 
-        // Row 1: Location
-        row = addFormRow(card, gbc, row, "Location *", locationField = SoftTheme.styledField(25));
+        // Row 1: Location (Dropdown)
+        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1; gbc.weightx = 0;
+        card.add(makeLabelPanel("Location *"), gbc);
+        locationCombo = new JComboBox<>();
+        locationCombo.setFont(SoftTheme.FONT_BODY);
+        locationCombo.setBackground(SoftTheme.BG_CARD);
+        gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 1.0;
+        card.add(locationCombo, gbc);
+        row++;
+
+        // Load locations
+        try {
+            LocationDAO ldao = new LocationDAO();
+            List<Location> locs = ldao.findAll();
+            for (Location l : locs) {
+                locationCombo.addItem(l);
+            }
+        } catch(SQLException ex) {
+            System.err.println("Failed to load locations: " + ex.getMessage());
+        }
 
         // Row 2 & 3: Price / Rental Income on same line
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1; gbc.weightx = 0;
@@ -85,39 +105,13 @@ public class PropertyFormScreen extends JPanel {
         card.add(rentalField, gbc);
         row++;
 
-        // Row 4: Expenses / Location Rating
+        // Row 4: Expenses
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1; gbc.weightx = 0;
-        card.add(makeLabelPanel("Monthly Expenses (RM) *"), gbc);
+        card.add(makeLabelPanel("Monthly Cost (RM) *"), gbc);
         expensesField = SoftTheme.styledField(14);
         gbc.gridx = 1; gbc.weightx = 0.5;
         card.add(expensesField, gbc);
-
-        gbc.gridx = 2; gbc.weightx = 0;
-        card.add(makeLabelPanel("Location Rating (1–10) *"), gbc);
-        ratingSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 10, 1));
-        ratingSpinner.setFont(SoftTheme.FONT_BODY);
-        ((JSpinner.DefaultEditor) ratingSpinner.getEditor()).getTextField().setFont(SoftTheme.FONT_BODY);
-        gbc.gridx = 3; gbc.weightx = 0.5;
-        card.add(ratingSpinner, gbc);
         row++;
-
-        // Row 5: Risk Level
-        gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1; gbc.weightx = 0;
-        card.add(makeLabelPanel("Risk Level *"), gbc);
-        riskCombo = new JComboBox<>(Property.RiskLevel.values());
-        riskCombo.setFont(SoftTheme.FONT_BODY);
-        riskCombo.setBackground(SoftTheme.BG_CARD);
-        gbc.gridx = 1; gbc.weightx = 0.5;
-        card.add(riskCombo, gbc);
-        row++;
-
-        // Rating hint label
-        gbc.gridx = 2; gbc.gridy = row - 1; gbc.gridwidth = 2;
-        JLabel ratingHint = new JLabel("1 = Poor area,  10 = Prime location");
-        ratingHint.setFont(SoftTheme.FONT_SMALL);
-        ratingHint.setForeground(SoftTheme.TEXT_SECONDARY);
-        card.add(ratingHint, gbc);
-        gbc.gridwidth = 1;
 
         // Error label
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 4;
@@ -168,23 +162,27 @@ public class PropertyFormScreen extends JPanel {
 
     private void populateFields() {
         nameField.setText(editTarget.getPropertyName());
-        locationField.setText(editTarget.getLocation());
-        priceField.setText(String.valueOf(editTarget.getPurchasePrice()));
-        rentalField.setText(String.valueOf(editTarget.getRentalIncome()));
-        expensesField.setText(String.valueOf(editTarget.getExpenses()));
-        ratingSpinner.setValue(editTarget.getLocationRating());
-        riskCombo.setSelectedItem(editTarget.getRiskLevel());
+        for (int i=0; i<locationCombo.getItemCount(); i++) {
+            Location loc = locationCombo.getItemAt(i);
+            if (loc.getLocationId() == editTarget.getLocationId()) {
+                locationCombo.setSelectedIndex(i);
+                break;
+            }
+        }
+        priceField.setText(String.valueOf(editTarget.getPrice()));
+        rentalField.setText(String.valueOf(editTarget.getRent()));
+        expensesField.setText(String.valueOf(editTarget.getCost()));
     }
 
     private void handleSubmit() {
         // ── Input parsing with validation ─────────────────────────────────
         String name     = nameField.getText().trim();
-        String location = locationField.getText().trim();
+        Location loc = (Location) locationCombo.getSelectedItem();
         String priceStr   = priceField.getText().trim();
         String rentalStr  = rentalField.getText().trim();
         String expenseStr = expensesField.getText().trim();
 
-        if (name.isEmpty() || location.isEmpty() || priceStr.isEmpty()
+        if (name.isEmpty() || loc == null || priceStr.isEmpty()
             || rentalStr.isEmpty() || expenseStr.isEmpty()) {
             showError("All fields marked * are required.");
             return;
@@ -208,12 +206,10 @@ public class PropertyFormScreen extends JPanel {
             p.setCreatedBy(currentUser.getUserId());
         }
         p.setPropertyName(name);
-        p.setLocation(location);
-        p.setPurchasePrice(price);
-        p.setRentalIncome(rental);
-        p.setExpenses(expenses);
-        p.setLocationRating((int) ratingSpinner.getValue());
-        p.setRiskLevel((Property.RiskLevel) riskCombo.getSelectedItem());
+        p.setLocationId(loc.getLocationId());
+        p.setPrice(price);
+        p.setRent(rental);
+        p.setCost(expenses);
 
         SwingWorker<Property, Void> worker = new SwingWorker<>() {
             @Override

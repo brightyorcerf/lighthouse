@@ -4,7 +4,8 @@ import com.lighthouse.dao.AnalysisDAO;
 import com.lighthouse.model.AnalysisResult;
 import com.lighthouse.model.AnalysisResult.Recommendation;
 import com.lighthouse.model.Property;
-import com.lighthouse.model.Property.RiskLevel;
+import com.lighthouse.dao.SettingsDAO;
+import com.lighthouse.model.Location;
 
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -68,9 +69,11 @@ public class InvestmentAnalysisService {
     private static final double MODERATE_THRESHOLD    = 40.0;
 
     private final AnalysisDAO analysisDAO;
+    private final SettingsDAO settingsDAO;
 
     public InvestmentAnalysisService() {
         this.analysisDAO = new AnalysisDAO();
+        this.settingsDAO = new SettingsDAO();
     }
 
     // ── Core Computation ──────────────────────────────────────────────────────
@@ -80,12 +83,15 @@ public class InvestmentAnalysisService {
      * Call {@link #analyseAndSave(Property)} to also persist to the DB.
      */
     public AnalysisResult compute(Property p) {
-        double monthlyProfit = p.getRentalIncome() - p.getExpenses();
+        double monthlyProfit = p.getRent() - p.getCost();
         double annualIncome  = monthlyProfit * 12;
-        double roi           = (annualIncome / p.getPurchasePrice()) * 100.0;
+        double roi           = (annualIncome / p.getPrice()) * 100.0;
         double annualYield   = roi; // same metric, dual label
 
-        double investmentScore = computeScore(roi, p.getLocationRating(), p.getRiskLevel());
+        int rating = p.getLocationObj() != null ? p.getLocationObj().getRating() : 5;
+        int risk   = computeRisk(p);
+
+        double investmentScore = computeScore(roi, rating, risk);
         Recommendation rec     = classify(investmentScore);
 
         return new AnalysisResult(
@@ -129,23 +135,51 @@ public class InvestmentAnalysisService {
                       .max(Comparator.comparingDouble(AnalysisResult::getInvestmentScore));
     }
 
+    private int computeRisk(Property p) {
+        int baseRisk = p.getLocationObj() != null ? p.getLocationObj().getRisk() : 5;
+        int risk = baseRisk;
+
+        try {
+            double highPriceThreshold = Double.parseDouble(settingsDAO.getSetting("rule_high_price_threshold", "500000"));
+            double lowRentThreshold   = Double.parseDouble(settingsDAO.getSetting("rule_low_rent_threshold", "2000"));
+            int penalty               = Integer.parseInt(settingsDAO.getSetting("rule_high_price_low_rent_risk_penalty", "3"));
+
+            if (p.getPrice() > highPriceThreshold && p.getRent() < lowRentThreshold) {
+                risk += penalty;
+            }
+
+            int demandRatingThreshold = Integer.parseInt(settingsDAO.getSetting("rule_low_demand_rating_threshold", "5"));
+            int demandPenalty         = Integer.parseInt(settingsDAO.getSetting("rule_low_demand_risk_penalty", "2"));
+
+            int rating = p.getLocationObj() != null ? p.getLocationObj().getRating() : 5;
+            if (rating < demandRatingThreshold) {
+                risk += demandPenalty;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error parsing risk rules: " + e.getMessage());
+        }
+
+        if (risk > 10) risk = 10;
+        if (risk < 1) risk = 1;
+        return risk;
+    }
+
     // ── Algorithm Helpers ─────────────────────────────────────────────────────
 
-    private double computeScore(double roi, int locationRating, RiskLevel riskLevel) {
-        // 50% weight: ROI performance relative to benchmark
-        double roiScore = Math.min(roi / MAX_ROI_BENCHMARK, 1.0) * 50.0;
+    private double computeScore(double roi, int locationRating, int risk) {
+        // Score = (ROI × weight1) + (location × weight2) - (risk × weight3)
+        double weight1 = 4.0;
+        double weight2 = 3.0;
+        double weight3 = 2.0;
 
-        // 30% weight: location attractiveness (user-rated 1–10)
-        double locationScore = (locationRating / 10.0) * 30.0;
-
-        // 20% weight: risk (inverted — less risk = more score)
-        double riskScore = switch (riskLevel) {
-            case LOW    -> 20.0;
-            case MEDIUM -> 12.0;
-            case HIGH   ->  4.0;
-        };
-
-        return roiScore + locationScore + riskScore;
+        double score = (roi * weight1) + (locationRating * weight2) - (risk * weight3);
+        
+        // Normalize score between 0 and 100 approximately
+        if (score > 100) score = 100;
+        if (score < 0) score = 0;
+        
+        return score;
     }
 
     private Recommendation classify(double score) {

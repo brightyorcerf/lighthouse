@@ -32,8 +32,8 @@ public class PropertyListScreen extends JPanel {
     private List<Property> properties;
 
     private static final String[] COLUMNS = {
-        "#", "Property Name", "Location", "Purchase Price",
-        "Rental Income", "Expenses", "Location ★", "Risk"
+        "#", "Property Name", "Location", "Price",
+        "Rent (mo)", "Cost (mo)", "Location ★", "Risk"
     };
 
     public PropertyListScreen(DashboardScreen dashboard, User currentUser) {
@@ -151,12 +151,12 @@ public class PropertyListScreen extends JPanel {
                         tableModel.addRow(new Object[]{
                             i++,
                             p.getPropertyName(),
-                            p.getLocation(),
-                            currency.format(p.getPurchasePrice()),
-                            currency.format(p.getRentalIncome()),
-                            currency.format(p.getExpenses()),
-                            p.getLocationRating() + "/10",
-                            p.getRiskLevel().name()
+                            p.getLocationObj() != null ? p.getLocationObj().getLocationName() : "Unknown",
+                            currency.format(p.getPrice()),
+                            currency.format(p.getRent()),
+                            currency.format(p.getCost()),
+                            (p.getLocationObj() != null ? p.getLocationObj().getRating() : "-") + "/10",
+                            p.getLocationObj() != null ? String.valueOf(p.getLocationObj().getRisk()) : "Unknown"
                         });
                     }
                 } catch (Exception ex) {
@@ -226,12 +226,18 @@ public class PropertyListScreen extends JPanel {
             if (isSelected) {
                 lbl.setBackground(tbl.getSelectionBackground());
             } else {
-                lbl.setBackground(switch (String.valueOf(value)) {
-                    case "LOW"    -> SoftTheme.HIGHLIGHT_GREEN;
-                    case "MEDIUM" -> SoftTheme.HIGHLIGHT_AMBER;
-                    case "HIGH"   -> SoftTheme.HIGHLIGHT_RED;
-                    default       -> SoftTheme.BG_CARD;
-                });
+                int riskVal = 5;
+                try {
+                    riskVal = Integer.parseInt(String.valueOf(value));
+                } catch(Exception e){}
+
+                if (riskVal <= 3) {
+                    lbl.setBackground(SoftTheme.HIGHLIGHT_GREEN);
+                } else if (riskVal <= 6) {
+                    lbl.setBackground(SoftTheme.HIGHLIGHT_AMBER);
+                } else {
+                    lbl.setBackground(SoftTheme.HIGHLIGHT_RED);
+                }
             }
             lbl.setForeground(SoftTheme.TEXT_PRIMARY);
             return lbl;

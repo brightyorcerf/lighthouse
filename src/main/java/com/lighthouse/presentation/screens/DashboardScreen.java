@@ -27,9 +27,10 @@ public class DashboardScreen extends JFrame {
     private AnalysisScreen      analysisScreen;
     private GraphScreen         graphScreen;
     private SearchScreen        searchScreen;
+    private AdminSettingsScreen settingsScreen;
 
     // Navigation buttons (kept as fields for active-state styling)
-    private JButton btnProperties, btnAdd, btnAnalysis, btnGraphs, btnSearch;
+    private JButton btnProperties, btnAdd, btnAnalysis, btnGraphs, btnSearch, btnSettings;
 
     public DashboardScreen(User user) {
         this.currentUser = user;
@@ -106,6 +107,10 @@ public class DashboardScreen extends JFrame {
         if (currentUser.isAdmin()) {
             btnAdd = navButton("➕  Add Property", "ADD_PROPERTY");
             sidebar.add(btnAdd);
+            sidebar.add(Box.createVerticalStrut(6));
+
+            btnSettings = navButton("⚙️  Settings", "SETTINGS");
+            sidebar.add(btnSettings);
             sidebar.add(Box.createVerticalStrut(6));
         }
 
@@ -224,13 +229,18 @@ public class DashboardScreen extends JFrame {
                     searchScreen = new SearchScreen(this, currentUser);
                 yield searchScreen;
             }
+            case "SETTINGS" -> {
+                if (settingsScreen == null)
+                    settingsScreen = new AdminSettingsScreen(this, currentUser);
+                yield settingsScreen;
+            }
             default -> new JLabel("Screen not found: " + screen);
         };
     }
 
     private void updateNavActiveState(String active) {
-        JButton[] btns = { btnProperties, btnAdd, btnAnalysis, btnGraphs, btnSearch };
-        String[]  keys = { "PROPERTIES", "ADD_PROPERTY", "ANALYSIS", "GRAPHS", "SEARCH" };
+        JButton[] btns = { btnProperties, btnAdd, btnAnalysis, btnGraphs, btnSearch, btnSettings };
+        String[]  keys = { "PROPERTIES", "ADD_PROPERTY", "ANALYSIS", "GRAPHS", "SEARCH", "SETTINGS" };
         for (int i = 0; i < btns.length; i++) {
             if (btns[i] == null) continue;
             boolean isActive = keys[i].equals(active);

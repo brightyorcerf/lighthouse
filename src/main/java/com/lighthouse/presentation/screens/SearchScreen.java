@@ -1,9 +1,13 @@
 package com.lighthouse.presentation.screens;
 
 import com.lighthouse.model.Property;
+import com.lighthouse.model.Location;
+import com.lighthouse.dao.LocationDAO;
 import com.lighthouse.model.User;
 import com.lighthouse.presentation.theme.SoftTheme;
 import com.lighthouse.service.PropertyService;
+import com.lighthouse.service.InvestmentAnalysisService;
+import com.lighthouse.model.AnalysisResult;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,24 +28,27 @@ public class SearchScreen extends JPanel {
     private final DashboardScreen dashboard;
     private final User            currentUser;
     private final PropertyService propertyService;
+    private final InvestmentAnalysisService analysisService;
     private final NumberFormat    currency;
 
-    private JTextField   locationField;
+    private JComboBox<Location> locationCombo;
     private JTextField   minPriceField;
     private JTextField   maxPriceField;
     private JTable       table;
     private DefaultTableModel tableModel;
     private JLabel       resultCountLabel;
+    private JLabel       bestInvestmentLabel;
 
     private static final String[] COLUMNS = {
-        "#", "Property Name", "Location", "Purchase Price",
-        "Rental (mo.)", "Expenses (mo.)", "Rating", "Risk"
+        "#", "Property Name", "Location", "Price",
+        "Rent (mo.)", "Cost (mo.)", "Rating", "Risk"
     };
 
     public SearchScreen(DashboardScreen dashboard, User currentUser) {
         this.dashboard       = dashboard;
         this.currentUser     = currentUser;
         this.propertyService = new PropertyService();
+        this.analysisService = new InvestmentAnalysisService();
         this.currency        = NumberFormat.getCurrencyInstance(new Locale("en", "MY"));
         currency.setMinimumFractionDigits(0);
 
@@ -64,9 +71,17 @@ public class SearchScreen extends JPanel {
         filterCard.setLayout(new FlowLayout(FlowLayout.LEFT, 12, 8));
 
         filterCard.add(SoftTheme.bodyLabel("Location:"));
-        locationField = SoftTheme.styledField(16);
-        locationField.setToolTipText("Partial match, e.g. 'Kuala'");
-        filterCard.add(locationField);
+        locationCombo = new JComboBox<>();
+        locationCombo.setFont(SoftTheme.FONT_BODY);
+        locationCombo.setBackground(SoftTheme.BG_CARD);
+        locationCombo.addItem(null); // Add empty item for 'All Locations'
+        try {
+            LocationDAO ldao = new LocationDAO();
+            for (Location l : ldao.findAll()) {
+                locationCombo.addItem(l);
+            }
+        } catch(Exception e){}
+        filterCard.add(locationCombo);
 
         filterCard.add(Box.createHorizontalStrut(8));
         filterCard.add(SoftTheme.bodyLabel("Min Price (RM):"));
@@ -84,7 +99,7 @@ public class SearchScreen extends JPanel {
 
         JButton clearBtn = SoftTheme.primaryButton("✕ Clear");
         clearBtn.addActionListener(e -> {
-            locationField.setText("");
+            locationCombo.setSelectedItem(null);
             minPriceField.setText("");
             maxPriceField.setText("");
             runSearch();
@@ -92,7 +107,6 @@ public class SearchScreen extends JPanel {
         filterCard.add(clearBtn);
 
         // Trigger search on Enter from any field
-        locationField.addActionListener(e -> runSearch());
         minPriceField.addActionListener(e -> runSearch());
         maxPriceField.addActionListener(e -> runSearch());
 
@@ -105,11 +119,21 @@ public class SearchScreen extends JPanel {
         removeAll();
         add(northWrap, BorderLayout.NORTH);
 
-        // ── Result count ─────────────────────────────────────────────────
+        // ── Result count and recommendation ──────────────────────────────
+        JPanel infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setOpaque(false);
+
         resultCountLabel = new JLabel("  ");
         resultCountLabel.setFont(SoftTheme.FONT_SMALL);
         resultCountLabel.setForeground(SoftTheme.TEXT_SECONDARY);
-        add(resultCountLabel, BorderLayout.BEFORE_FIRST_LINE);
+        infoPanel.add(resultCountLabel, BorderLayout.WEST);
+
+        bestInvestmentLabel = new JLabel(" ");
+        bestInvestmentLabel.setFont(SoftTheme.FONT_SUBHEAD);
+        bestInvestmentLabel.setForeground(SoftTheme.HIGHLIGHT_GREEN);
+        infoPanel.add(bestInvestmentLabel, BorderLayout.EAST);
+
+        add(infoPanel, BorderLayout.BEFORE_FIRST_LINE);
 
         // ── Results table ─────────────────────────────────────────────────
         tableModel = new DefaultTableModel(COLUMNS, 0) {
@@ -134,7 +158,8 @@ public class SearchScreen extends JPanel {
     }
 
     private void runSearch() {
-        String location = locationField.getText().trim();
+        Location selectedLoc = (Location) locationCombo.getSelectedItem();
+        Integer locId = selectedLoc != null ? selectedLoc.getLocationId() : null;
         Double minPrice = null, maxPrice = null;
 
         try {
@@ -154,7 +179,7 @@ public class SearchScreen extends JPanel {
 
         final Double fMin = minPrice;
         final Double fMax = maxPrice;
-        final String fLoc = location.isEmpty() ? null : location;
+        final Integer fLoc = locId;
 
         SwingWorker<List<Property>, Void> worker = new SwingWorker<>() {
             @Override
@@ -168,20 +193,37 @@ public class SearchScreen extends JPanel {
                     List<Property> props = get();
                     tableModel.setRowCount(0);
                     int i = 1;
+
+                    Property bestProp = null;
+                    double bestScore = -1;
+
                     for (Property p : props) {
                         tableModel.addRow(new Object[]{
                             i++,
                             p.getPropertyName(),
-                            p.getLocation(),
-                            currency.format(p.getPurchasePrice()),
-                            currency.format(p.getRentalIncome()),
-                            currency.format(p.getExpenses()),
-                            p.getLocationRating() + "/10",
-                            p.getRiskLevel().name()
+                            p.getLocationObj() != null ? p.getLocationObj().getLocationName() : "Unknown",
+                            currency.format(p.getPrice()),
+                            currency.format(p.getRent()),
+                            currency.format(p.getCost()),
+                            (p.getLocationObj() != null ? p.getLocationObj().getRating() : "-") + "/10",
+                            p.getLocationObj() != null ? String.valueOf(p.getLocationObj().getRisk()) : "Unknown"
                         });
+
+                        AnalysisResult ar = analysisService.compute(p);
+                        if (ar.getInvestmentScore() > bestScore) {
+                            bestScore = ar.getInvestmentScore();
+                            bestProp = p;
+                        }
                     }
+
                     resultCountLabel.setText("  " + props.size()
                         + " propert" + (props.size() == 1 ? "y" : "ies") + " found");
+
+                    if (bestProp != null) {
+                        bestInvestmentLabel.setText("🌟 Best Investment: " + bestProp.getPropertyName() + " (Score: " + bestScore + ")  ");
+                    } else {
+                        bestInvestmentLabel.setText(" ");
+                    }
                 } catch (Exception ex) {
                     showError("Search failed: " + ex.getMessage());
                 }
@@ -218,13 +260,21 @@ public class SearchScreen extends JPanel {
                 JLabel lbl = new JLabel(String.valueOf(value), SwingConstants.CENTER);
                 lbl.setOpaque(true);
                 lbl.setFont(SoftTheme.FONT_SMALL);
-                lbl.setBackground(sel ? tbl.getSelectionBackground()
-                    : switch (String.valueOf(value)) {
-                        case "LOW"    -> SoftTheme.HIGHLIGHT_GREEN;
-                        case "MEDIUM" -> SoftTheme.HIGHLIGHT_AMBER;
-                        case "HIGH"   -> SoftTheme.HIGHLIGHT_RED;
-                        default       -> SoftTheme.BG_CARD;
-                    });
+
+                if (sel) {
+                    lbl.setBackground(tbl.getSelectionBackground());
+                } else {
+                    int riskVal = 5;
+                    try { riskVal = Integer.parseInt(String.valueOf(value)); } catch(Exception e){}
+
+                    if (riskVal <= 3) {
+                        lbl.setBackground(SoftTheme.HIGHLIGHT_GREEN);
+                    } else if (riskVal <= 6) {
+                        lbl.setBackground(SoftTheme.HIGHLIGHT_AMBER);
+                    } else {
+                        lbl.setBackground(SoftTheme.HIGHLIGHT_RED);
+                    }
+                }
                 lbl.setForeground(SoftTheme.TEXT_PRIMARY);
                 return lbl;
             }
