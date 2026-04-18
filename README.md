@@ -50,6 +50,7 @@ Investment Analysis System: A Java Swing desktop application for property invest
 │   MySQL 8.x            — users / properties / analysis tables   │
 └─────────────────────────────────────────────────────────────────┘
 ```
+![img1.jpg](img1.jpg)
 
 ---
 
@@ -74,11 +75,11 @@ To test the evaluation parameters, here are 5 realistic properties to input.
 
 | Property Name               | Location      | Price (RM) | Rent/mo (RM) | Cost/mo (RM) | Profile               |
 |-----------------------------|---------------|------------|--------------|--------------|-----------------------|
-| unicorn valley              | Kuala Lumpur  | 450,000    | 2,500        | 350          | High profit, low risk |
-| stardust                    | Penang        | 650,000    | 3,800        | 500          | Excellent yields      |
-| tejaansh's mansion          | Johor Bahru   | 550,000    | 2,000        | 250          | Moderate / Stable     |
-| heritage                    | Melaka        | 300,000    | 1,800        | 200          | Low Cost, Med ROI     |
-| oranges&apples              | Cyberjaya     | 400,000    | 2,300        | 300          | High Demand           |
+| unicorn valley              | bangalore     | 450,000    | 2,500        | 350          | High profit, low risk |
+| stardust                    | hyderabad     | 650,000    | 3,800        | 500          | Excellent yields      |
+| tejaansh's mansion          | new york      | 550,000    | 2,000        | 250          | Moderate / Stable     |
+| heritage                    | delhi         | 300,000    | 1,800        | 200          | Low Cost, Med ROI     |
+| oranges&apples              | pune          | 400,000    | 2,300        | 300          | High Demand           |
 
 ### Recommendation Thresholds
 | Score    | Classification |
@@ -86,6 +87,8 @@ To test the evaluation parameters, here are 5 realistic properties to input.
 | ≥ 65     | High Profit    |
 | 40 – 64  | Moderate       |
 | < 40     | Risky          |
+
+![img2.jpg](img2.jpg)
 
 ---
 
@@ -194,3 +197,5 @@ BCrypt is an adaptive password hashing algorithm:
 Even if the entire database is leaked, attacker cannot recover user passwords.
 
 ---
+
+![img3.jpg](img3.jpg)
