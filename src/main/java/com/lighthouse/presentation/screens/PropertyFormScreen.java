@@ -207,6 +207,7 @@ public class PropertyFormScreen extends JPanel {
         }
         p.setPropertyName(name);
         p.setLocationId(loc.getLocationId());
+        p.setLocationObj(loc);
         p.setPrice(price);
         p.setRent(rental);
         p.setCost(expenses);

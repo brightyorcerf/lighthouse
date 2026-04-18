@@ -64,7 +64,7 @@ public class AdminSettingsScreen extends JPanel {
         JPanel panel = SoftTheme.cardPanel();
         panel.setLayout(new BorderLayout(10, 10));
 
-        JLabel title = SoftTheme.subheadLabel("Locations Management");
+        JLabel title = SoftTheme.headingLabel("Locations Management");
         panel.add(title, BorderLayout.NORTH);
 
         JPanel formPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -99,7 +99,7 @@ public class AdminSettingsScreen extends JPanel {
         JPanel panel = SoftTheme.cardPanel();
         panel.setLayout(new GridLayout(4, 2, 10, 10));
 
-        panel.add(SoftTheme.subheadLabel("Risk Rules Configuration"));
+        panel.add(SoftTheme.headingLabel("Risk Rules Configuration"));
         panel.add(new JLabel("")); // spacer
 
         highPriceField = SoftTheme.styledField(15);

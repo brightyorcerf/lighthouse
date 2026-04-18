@@ -25,7 +25,7 @@ public class AnalysisDAO {
         a.setAnalysisId(rs.getInt("analysis_id"));
         a.setPropertyId(rs.getInt("property_id"));
         a.setRoi(rs.getDouble("roi"));
-        a.setMonthlyProfit(rs.getDouble("profit"));
+        a.setMonthlyProfit(rs.getDouble("monthly_profit"));
         a.setAnnualYield(rs.getDouble("annual_yield") != 0
                          ? rs.getDouble("annual_yield")
                          : a.getMonthlyProfit() * 12);
@@ -93,7 +93,7 @@ public class AnalysisDAO {
         // Insert fresh
         String sql = """
             INSERT INTO analysis
-              (property_id, roi, profit, annual_yield, investment_score, recommendation)
+              (property_id, roi, monthly_profit, annual_yield, investment_score, recommendation)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
         try (PreparedStatement ps = conn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

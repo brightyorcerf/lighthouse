@@ -65,12 +65,20 @@ Annual Yield    = ROI  (same metric, reported separately)
 
 ### Investment Score (0–100 composite)
 ```
-ROI Score       = min(ROI / 15.0, 1.0) × 50    [50% weight]
-Location Score  = (locationRating / 10) × 30   [30% weight]
-Risk Score      = LOW→20  |  MEDIUM→12  |  HIGH→4   [20% weight]
-
-Investment Score = ROI Score + Location Score + Risk Score
+Score = (ROI × 4.0) + (Location Rating × 3.0) - (Risk × 2.0)
+Normalized to 0 - 100.
 ```
+
+### Example Property Data
+To test the evaluation parameters, here are 5 realistic properties to input.
+
+| Property Name               | Location      | Price (RM) | Rent/mo (RM) | Cost/mo (RM) | Profile               |
+|-----------------------------|---------------|------------|--------------|--------------|-----------------------|
+| Prime Studio Suite          | Kuala Lumpur  | 450,000    | 2,500        | 350          | High profit, low risk |
+| Bayview Family Condo        | Penang        | 650,000    | 3,800        | 500          | Excellent yields      |
+| Suburban Corner Lot         | Johor Bahru   | 550,000    | 2,000        | 250          | Moderate / Stable     |
+| Heritage Walk-Up            | Melaka        | 300,000    | 1,800        | 200          | Low Cost, Med ROI     |
+| University Tech Duplex      | Cyberjaya     | 400,000    | 2,300        | 300          | High Demand           |
 
 ### Recommendation Thresholds
 | Score    | Classification |

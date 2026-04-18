@@ -162,7 +162,9 @@ public class AnalysisScreen extends JPanel {
     private JPanel buildResultCard(AnalysisResult r) {
         JPanel card = SoftTheme.cardPanel();
         card.setLayout(new BorderLayout(16, 0));
-        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 140));
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        card.setPreferredSize(new Dimension(750, 170));
+        card.setMinimumSize(new Dimension(600, 160));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Left: property name + recommendation badge
